@@ -1,15 +1,17 @@
 """
 Coveralls API for Bitbucket
 """
+import os
+import json
+import hashlib
 import requests
 from coverage import coverage as Coverage
-import hashlib
 
 BASE='https://coveralls.io'
 CLIENT='coveralls-python-hg'
 _API='api/v1/jobs'
 
-def _generate_source_files(file_path_name='.coverage'):
+def _generate_source_files(file_path_name='.coverage', strip_path=None):
     "Use the .coverage data file to generate the coverage lines for coveralls."
     coverage = Coverage(data_file=file_path_name)
     coverage.load()
@@ -28,6 +30,13 @@ def _generate_source_files(file_path_name='.coverage'):
                 lines.append(1)
             else:
                 lines.append(None)
+
+        if strip_path is not None:
+            if file_name.startswith(strip_path):
+                file_name = file_name[len(strip_path):]
+
+            if file_name.startswith('/'):
+                file_name = file_name[1:]
 
         tmp.append({'name':file_name,
                     'source_digest':md5,
@@ -98,6 +107,14 @@ class API(object):
             if value is not None:
                 self.settings['UPLOAD'][key] = value
 
+    def set_repo_token(self, token=None):
+        "Set the coveralls repository token"
+        if token is None:
+            token = self.settings['TOKEN']
+
+        self.settings['UPLOAD']['repo_token'] = token
+
+
     def set_service_values(self, name=CLIENT, number=None, job_id=None):
         "Set service values."
         tmp = {'service_name':name, 'service_number':number,
@@ -106,14 +123,16 @@ class API(object):
 
     def set_build_values(self, build_url=None, branch=None, pull_request=None):
         "Set build values."
+        if pull_request.strip().lower() == 'false':
+            pull_request=None
         tmp = {'service_build_url':build_url, 'service_branch':branch,
                'service_pull_request':pull_request}
         self._add_values(tmp)
 
-    def set_source_files(self, coverage_file):
+    def set_source_files(self, coverage_file, strip_path=None):
         "set the source files"
         self.settings['UPLOAD']['source_files'] = \
-                                           _generate_source_files(coverage_file)
+                               _generate_source_files(coverage_file, strip_path)
 
     def _assert_git_dict(self):
         "Make sure the git headers are set."
@@ -141,8 +160,9 @@ class API(object):
         self._assert_git_dict()
         upload = self.settings['UPLOAD']
         upload['git']['head']['id'] = commit_id
+        upload['git']['head']['message'] = message
         upload['git']['branch'] = branch
-        upload['git']['message'] = message
+
         if remotes is not None:
             upload['git']['remotes'] = remotes
 
@@ -150,11 +170,15 @@ class API(object):
         upload = self.settings['UPLOAD']
         tmp = ['set_source_files', 'set_dvcs_user', 'set_dvcs_commit']
 
+        if 'service_name' not in upload:
+            self.set_service_values()
+
+        if 'repo_token' not in upload:
+            self.set_repo_token()
+
         if 'source_files' in upload:
             tmp.remove('set_source_files')
 
-        if 'service_name' not in upload:
-            self.set_service_values()
 
         if 'git' not in upload:
             tmp.remove('set_dvcs_user')
@@ -170,30 +194,16 @@ class API(object):
             text = 'Missing upload data, please set data with: %s' % str(tmp)
             raise ValueError(text)
 
+        return upload
+
     def upload_coverage(self):
         "Upload coverage data."
         self._check_upload()
-
-        return self.settings['UPLOAD']
-
-if __name__ == '__main__':
-    #print(source_files('.coverage'))
-    api = API('hellwig', 'django-integrator',
-              'jscZri6PIBeftlndaHKUgZeEU03b2MhHu')
-    
-    api.set_source_files('.coverage')
-    api.set_dvcs_user('Martin P. Hellwig', 'martin.hellwig@gmail.com')
-    api.set_dvcs_commit('1', 'text', 'default')
-    from pprint import pprint
-    data = api.upload_coverage()
-    pprint(data, width=220)
-
-    
-    
-    #print(api.builds('ef223ca120baa91d4936ac6755963889fac2bf17'))
-    
-#     for entry in api.list_builds():
-#         print(entry)
-    
-
+        json_file = json.dumps(self.settings['UPLOAD'])
+        files = {'json_file':json_file}
+        post = requests.post(self.url_post, files=files)
+        if post.status_code != 200:
+            post.raise_for_status()
+        else:
+            return True
 
