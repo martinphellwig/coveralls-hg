@@ -23,8 +23,9 @@ upload script specifically made for codeship/bitbucket combination.
 
 How do I install it?
 ====================
-.. code:: python
-  pip install coveralls-hg
+::
+
+  $ pip install coveralls-hg
 
 
 How do I use it?
@@ -33,22 +34,24 @@ There are two uses; as a library or as a script.
 
 Library
 -------
-.. code:: python
+::
+
   # The user, repo are the bitbucket variables
   # The token is the coveralls project token
-  from coveralls_hg.api import API
-  api = API(user, repo, token)
-  api.set_source_files(path_to_coverage_data)
-  api.upload_coverage()
+  >>> from coveralls_hg.api import API
+  >>> api = API(user, repo, token)
+  >>> api.set_source_files(path_to_coverage_data)
+  >>> api.upload_coverage()
 
 Script
 ------
 The script requires COVERALLS_REPO_TOKEN to be set in then environment.
 Then run your test with coverage and run the script, for example:
 
-.. code:: shell
-  coverage run test.py
-  upload_coveralls_csbb
+::
+
+  $ coverage run test.py
+  $ upload_coveralls_csbb
 
 For the curious, csbb stands for Codeship BitBucket
 
