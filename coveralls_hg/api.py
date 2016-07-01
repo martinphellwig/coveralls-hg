@@ -4,10 +4,11 @@ Coveralls API for Bitbucket
 import json
 import hashlib
 import requests
+from coverage import __version__ as coverage_version
+# coverage 3 and 4 have api changes, since I use pydev which is still stuck
+# on coverage 3, but the rest of the world has moved on I'll need to support
+# both.
 from coverage import coverage as Coverage
-from coverage import __version__
-print('# COVERAGE VERSION', __version__)
-
 BASE='https://coveralls.io'
 CLIENT='coveralls-python-hg'
 _API='api/v1/jobs'
@@ -21,8 +22,14 @@ def _generate_source_files(file_path_name='.coverage', strip_path=None):
 
     for file_name in coverage.data.measured_files():
         analysis = coverage._analyze(file_name)# pylint:disable=protected-access
-        length = len(analysis.parser.lines) + 1
-        md5 = hashlib.md5(analysis.parser.text.encode('UTF-8')).hexdigest()
+        # pylint:disable=no-member
+        if coverage_version.startswith('3'):
+            length = len(analysis.parser.lines) + 1
+            md5 = hashlib.md5(analysis.parser.text.encode('UTF-8')).hexdigest()
+        else:
+            source = analysis.file_reporter.source()
+            md5 = hashlib.md5(source.encode('UTF-8')).hexdigest()
+            length = len(source.split('\n'))
         lines = list()
         for line_no in range(1, length):
             if line_no in analysis.missing:
