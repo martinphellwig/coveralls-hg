@@ -4,8 +4,11 @@
    :target: https://coveralls.io/bitbucket/hellwig/coveralls-hg?branch=default
 .. image:: https://img.shields.io/pypi/v/coveralls-hg.svg
    :target: https://pypi.python.org/pypi/Coveralls-HG/
+.. image:: https://img.shields.io/badge/Donate-PayPal-blue.svg
+   :target: https://paypal.me/MartinHellwig
+.. image:: https://img.shields.io/badge/Donate-Patreon-orange.svg
+   :target: https://www.patreon.com/hellwig
    
-
 ############
 Coveralls HG
 ############
@@ -73,9 +76,11 @@ appreciated. Time permitting I will have a serious look at any pull requests.
 
 Can I do something more that this?
 ----------------------------------
-Wow! Are you sure? Well if you are really sure, and that would be fantastic, you
-can leave your donation in the tip hat AKA patreon account;
+Wow! Are you sure? Well if you are really sure, and that would be fantastic,
+you can leave your donation via patreon
 http://patreon.com/hellwig 
+or paypal
+https://paypal.me/MartinHellwig
 
 Thank you very much! Your donation will help me towards my end-goal of a
 grid-independent small holding where I automate the sh*t out of it :-). In the
