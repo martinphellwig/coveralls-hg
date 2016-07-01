@@ -5,6 +5,8 @@ to coveralls.
 
 import os
 from coveralls_hg.api import API
+from pprint import pprint
+from copy import deepcopy
 
 # pylint:disable=dangerous-default-value
 def main(env=os.environ, coverage_file='.coverage'):
@@ -23,7 +25,12 @@ def main(env=os.environ, coverage_file='.coverage'):
 
     api.set_service_values(number=env['CI_BUILD_NUMBER'])
     api.set_source_files(coverage_file, strip_path=env['PWD'])
+    print('# Uploading to coveralls.io using the following configuration:')
+    copied = deepcopy(api.settings['UPLOAD'])
+    copied.pop('source_files')
+    pprint(copied)
     api.upload_coverage()
+    print('# Upload done.')
 
 
 if __name__ == '__main__': # pragma: no cover

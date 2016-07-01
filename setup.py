@@ -7,7 +7,7 @@ from setuptools import setup
 
 NAME = 'Coveralls-HG'
 DESCRIPTION = 'Upload coverage data to coveralls.io from codeship with mercurial'
-VERSION = '0.9.0.1'
+VERSION = '0.9.0.3'
 LICENSE = 'BSD'
 AUTHOR = 'Martin P. Hellwig'
 AUTHOR_EMAIL = 'martin.hellwig@gmail.com'

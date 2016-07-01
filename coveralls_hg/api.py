@@ -9,6 +9,7 @@ from coverage import __version__ as coverage_version
 # on coverage 3, but the rest of the world has moved on I'll need to support
 # both.
 from coverage import coverage as Coverage
+
 BASE='https://coveralls.io'
 CLIENT='coveralls-python-hg'
 _API='api/v1/jobs'
@@ -23,10 +24,10 @@ def _generate_source_files(file_path_name='.coverage', strip_path=None):
     for file_name in coverage.data.measured_files():
         analysis = coverage._analyze(file_name)# pylint:disable=protected-access
         # pylint:disable=no-member
-        if coverage_version.startswith('3'):
+        if coverage_version.startswith('3'): # pragma: no cover
             length = len(analysis.parser.lines) + 1
             md5 = hashlib.md5(analysis.parser.text.encode('UTF-8')).hexdigest()
-        else:
+        else: # pragma: no cover
             source = analysis.file_reporter.source()
             md5 = hashlib.md5(source.encode('UTF-8')).hexdigest()
             length = len(source.split('\n'))
