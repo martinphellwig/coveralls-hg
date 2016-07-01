@@ -1,7 +1,6 @@
 """
 Coveralls API for Bitbucket
 """
-import os
 import json
 import hashlib
 import requests
@@ -48,7 +47,6 @@ def _generate_source_files(file_path_name='.coverage', strip_path=None):
 def _fetch_json_data(url):
     "Return the json data"
     got = requests.get(url)
-
     if got.status_code != 200:
         got.raise_for_status()
 
@@ -178,7 +176,6 @@ class API(object):
 
         if 'source_files' in upload:
             tmp.remove('set_source_files')
-
 
         if 'git' not in upload:
             tmp.remove('set_dvcs_user')
