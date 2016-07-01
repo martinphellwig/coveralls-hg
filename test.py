@@ -6,6 +6,25 @@ Created on 30 Jun 2016
 import unittest
 import os
 from coveralls_hg import api, coveralls_codeship
+import coverage
+
+def make_coverage_data():
+    "make coverage data"
+    old = os.path.abspath(os.getcwd())
+    nwd = os.path.dirname(os.path.abspath(__file__))
+    os.chdir(nwd)
+    cov = coverage.coverage(data_file=os.path.join(nwd, 'coverage.dat'))
+    cov.start()
+    coveralls = api.API('x', 'y', 'z')
+    try:
+        coveralls.upload_coverage()
+    except: # pylint: disable=bare-except
+        # we just want some coverage data, it does not really matter what it is.
+        pass
+    cov.stop()
+    cov.save()
+    os.chdir(old)
+
 
 class RequestsMock():
     "Requests Mock"
@@ -55,10 +74,22 @@ ENV = {'CI_REPO_NAME':'hellwig/django-integrator',
 
 # pylint: disable=missing-docstring, protected-access
 class Test(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        super(Test, cls).setUpClass()
+        make_coverage_data()
+
+    @classmethod
+    def tearDownClass(cls):
+        super(Test, cls).tearDownClass()
+        path = os.path.dirname(os.path.abspath(__file__))
+        path = os.path.join(path, 'coverage.dat')
+        os.remove(path)
+
     def setUp(self):
         api.requests = RequestsMock()
         path = os.path.dirname(os.path.abspath(__file__))
-        self.path = os.path.join(path, 'test_data', 'coverage')
+        self.path = os.path.join(path, 'coverage.dat')
 
     def test_01_smoke(self):
         "Just a smoke test."
