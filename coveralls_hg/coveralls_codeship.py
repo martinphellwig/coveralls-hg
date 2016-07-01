@@ -23,13 +23,19 @@ def main(env=os.environ, coverage_file='.coverage'):
                       email_author=env['CI_COMMITTER_EMAIL'])
 
     api.set_service_values(number=env['CI_BUILD_NUMBER'])
-    api.set_source_files(coverage_file, strip_path=env['PWD'])
+
+    cwd = os.path.abspath(os.getcwd())
+    api.set_source_files(coverage_file, strip_path=cwd)
+
     print('# Uploading to coveralls.io using the following configuration:')
     copied = deepcopy(api.settings['UPLOAD'])
     source = copied.pop('source_files')
     pprint(copied)
     print('# Coverage:')
-    pprint(source)
+    for item in source:
+        print(item['source_digest'], '|', item['name'])
+        tmp = [str(value) if value in [0,1] else '-' for value in item['coverage']]
+        print(''.join(tmp))
     api.upload_coverage()
     print('# Upload done.')
 
