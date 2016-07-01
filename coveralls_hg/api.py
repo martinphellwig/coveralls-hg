@@ -5,6 +5,8 @@ import json
 import hashlib
 import requests
 from coverage import coverage as Coverage
+from coverage import __version__
+print('# COVERAGE VERSION', __version__)
 
 BASE='https://coveralls.io'
 CLIENT='coveralls-python-hg'
