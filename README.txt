@@ -44,31 +44,39 @@ How do I use it?
 The api has several other things that can be set additionally to upload to
 coveralls.io .
 
+
 What license is this?
 =====================
 Two-clause BSD
 
+
 How can I get support?
 ======================
-The tools I publish have already taken me considerable effort which I have given
-away free of charge, if you require guaranteed support please contact me via
-e-mail so we can discuss my fee.
+Please use the repo's bug tracker to leave behind any questions, feedback,
+suggestions and comments. I will handle them depending on my time and what looks
+interesting. If you require guaranteed support please contact me via
+e-mail so we can discuss appropriate compensation.
 
-How can I give you support?
-===========================
-Feedback, suggestions and comments via the repo's bug tracker are always
-appreciated. Time permitting I will have a serious look at any pull requests. 
 
-Can I do something more that this?
-----------------------------------
-Wow! Are you sure? Well if you are really sure, and that would be fantastic,
-you can leave your donation via patreon
-http://patreon.com/hellwig 
-or paypal
+Signing Off
+===========
+Is my work helpful or valuable to you? You can repay me by donating via:
+
 https://paypal.me/MartinHellwig
 
-Thank you very much! Your donation will help me towards my end-goal of a
-grid-independent small holding where I automate the sh*t out of it :-). In the
-mean time I'll keep building stuff and where possible and practical open-source
-them under the BSD license.  
+.. image:: https://img.shields.io/badge/PayPal-MartinHellwig-blue.svg
+  :target: https://paypal.me/MartinHellwig
+  :alt: Donate via PayPal.Me
+  :scale: 120 %
 
+-or-
+
+https://www.patreon.com/hellwig
+
+.. image:: https://img.shields.io/badge/Patreon-hellwig-orange.svg
+  :target: https://www.patreon.com/hellwig
+  :alt: Donate via Patreon
+  :scale: 120 %
+
+
+Thank you!
