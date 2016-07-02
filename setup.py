@@ -6,8 +6,8 @@ import os
 from setuptools import setup
 
 NAME = 'Coveralls-HG'
-DESCRIPTION = 'Upload coverage data to coveralls.io from codeship with mercurial'
-VERSION = '1.0.0.1'
+DESCRIPTION = 'Coveralls API for: Python 3+, Coverage & Mercurial.'
+VERSION = '2.0.0.1'
 LICENSE = 'BSD'
 AUTHOR = 'Martin P. Hellwig'
 AUTHOR_EMAIL = 'martin.hellwig@gmail.com'
@@ -18,8 +18,7 @@ URL_DOWNLOAD = URL_MAIN + 'get/' + DOWNLOAD_ID + '.zip'
 #
 PACKAGES = ['coveralls_hg']
 PACKAGE_DATA  = {}
-SCRIPT = 'upload_coveralls_csbb='\
-         'coveralls_hg.coveralls_codeship:main'
+SCRIPTS = []
 KEYWORDS = [
     'Coveralls',
     'Codeship',
@@ -29,6 +28,7 @@ CLASSIFIERS = [
     'Programming Language :: Python :: 3',
     ]
 REQUIREMENTS = [
+    'setuptools',
     'requests',
     'coverage',
     ]
@@ -42,6 +42,6 @@ KWARGS = {
     'url':URL_MAIN, 'download_url':URL_DOWNLOAD, 'keywords':KEYWORDS,
     'license':LICENSE, 'classifiers':CLASSIFIERS,
     'install_requires':REQUIREMENTS, 'package_data':PACKAGE_DATA,
-    'entry_points':{'console_scripts':[SCRIPT]},}
+    'entry_points':{'console_scripts':SCRIPTS},}
 
 setup(**KWARGS)

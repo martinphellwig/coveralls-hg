@@ -129,9 +129,9 @@ class API(object):
                'service_job_id':job_id}
         self._add_values(tmp)
 
-    def set_build_values(self, build_url=None, branch=None, pull_request=None):
+    def set_build_values(self, build_url=None, branch=None, pull_request=''):
         "Set build values."
-        if pull_request.strip().lower() == 'false':
+        if pull_request.strip().lower() == 'false' or len(pull_request) == 0:
             pull_request=None
         tmp = {'service_build_url':build_url, 'service_branch':branch,
                'service_pull_request':pull_request}

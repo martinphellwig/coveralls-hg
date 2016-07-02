@@ -5,7 +5,7 @@ Created on 30 Jun 2016
 '''
 import unittest
 import os
-from coveralls_hg import api, coveralls_codeship
+from coveralls_hg import api
 import coverage
 
 def make_coverage_data():
@@ -94,12 +94,18 @@ class Test(unittest.TestCase):
     def test_01_smoke(self):
         "Just a smoke test."
         api.requests.status_code = 200
-        coveralls_codeship.main(ENV, self.path)
+        user, repo = ENV['CI_REPO_NAME'].split('/')
+        cov = api.API(user,repo, token=ENV['COVERALLS_REPO_TOKEN'])
+        cov.set_source_files(self.path, strip_path='')
+        cov.set_build_values()
+        cov.set_dvcs_user(ENV['CI_COMMITTER_NAME'], ENV['CI_COMMITTER_EMAIL'])
+        cov.set_dvcs_commit(ENV['CI_COMMIT_ID'],
+                            ENV['CI_MESSAGE'],
+                            ENV['CI_BRANCH'],)
+        cov.upload_coverage()
+        api.requests.status_code = 404
+        self.assertRaises(ValueError, cov.upload_coverage)
 
-    def test_02_smoke_error(self):
-        "Smoke test for error."
-        api.requests.status_code = 400
-        self.assertRaises(ValueError, coveralls_codeship.main, ENV, self.path)
 
 
     def test_03_get_builds_error(self):
@@ -144,3 +150,4 @@ class Test(unittest.TestCase):
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.test_first']
     unittest.main()
+    

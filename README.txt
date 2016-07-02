@@ -16,13 +16,12 @@ Coveralls HG
 What is it?
 ===========
 - An api library to coveralls.io
-- A script for uploading coverage data from a Codeship build environment
-
 
 What problem does it solve?
 ===========================
-Other coveralls library require git, this one is more dvcs agnostic with the
-upload script specifically made for codeship/bitbucket combination. 
+Other coveralls library require git, this one is more dvcs agnostic, but
+targeted towards bitbucket. The coverage information should be a python coverage
+file.
 
 How do I install it?
 ====================
@@ -33,10 +32,6 @@ How do I install it?
 
 How do I use it?
 ================
-There are two uses; as a library or as a script.
-
-Library
--------
 ::
 
   # The user, repo are the bitbucket variables
@@ -46,18 +41,8 @@ Library
   >>> api.set_source_files(path_to_coverage_data)
   >>> api.upload_coverage()
 
-Script
-------
-The script requires COVERALLS_REPO_TOKEN to be set in then environment.
-Then run your test with coverage and run the script, for example:
-
-::
-
-  $ coverage run test.py
-  $ upload_coveralls_csbb
-
-For the curious, csbb stands for Codeship BitBucket
-
+The api has several other things that can be set additionally to upload to
+coveralls.io .
 
 What license is this?
 =====================
