@@ -7,7 +7,7 @@ from setuptools import setup
 
 NAME = 'Coveralls-HG'
 DESCRIPTION = 'Coveralls API for: Python 3+, Coverage & Mercurial.'
-VERSION = '2.0.0.1'
+VERSION = '2.0.0.2'
 LICENSE = 'BSD'
 AUTHOR = 'Martin P. Hellwig'
 AUTHOR_EMAIL = 'martin.hellwig@gmail.com'
